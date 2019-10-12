@@ -1,0 +1,44 @@
+<div class="container-fluid h-100 bg-dark">
+  <div class="row h-100 align-items-center">
+    <div class="col-6 text-center">
+      <circle-progress
+        [percent]="(1 - meetingProgress) * 100"
+        radius="150"
+        outerStrokeWidth="20"
+        innerStrokeWidth="0"
+        [outerStrokeColor]="progressColor"
+        [showSubtitle]="false"
+        [showUnits]="false"
+        [title]="meetingEndsIn | time: true"
+        titleColor="#ffffff"
+        titleFontSize="25"
+      ></circle-progress>
+    </div>
+    <div class="col-6">
+      <div class="container text-white">
+        <div class="row">
+          <div class="col text-center">
+            <span class="display-4">{{room}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <span class="display-3 font-weight-bold">Welcome {{meeting ? meeting.owner : ''}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <span class="display-4">
+              {{meeting ? meeting.title : 'No title'}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<audio #alertSound>
+  <source src='/assets/sounds/insight.mp3' type="audio/mp3">
+</audio>
+<app-time-alert *ngIf="remainingTimeAlert" [time]="meetingEndsIn" class="alert-fullscreen bg-unavailable text-white"></app-time-alert>

@@ -1,0 +1,49 @@
+<div class="container overflow-hidden text-white h-100">
+  <div class="row mt-5">
+    <div class="col text-center text-white">
+      <span class="display-3 d-block">It looks like this is a new device.</span>
+    </div>
+  </div>
+  <div class="row mt-3" *ngIf="phase == 0">
+    <div class="col">
+      <span class="display-4 d-block text-center">Please select a room to use it with.</span>
+      <input type="text" class="text-white" [(ngModel)]="searchFilter" (keyup)="onSearch()" placeholder="Search for a room"/>
+
+      <app-spinner *ngIf="buildings.length == 0" color="white" class="d-block text-center mt-4"></app-spinner>
+      <span class="display-3 d-block text-center" *ngIf="buildings.length != 0 && viewBuildings.length == 0">No rooms found</span>
+
+      <div class="accordion text-white mt-4" id="accordion-buildings">
+        <div class="card bg-dark" *ngFor="let building of viewBuildings; index as i">
+          <div class="card-header" id="headingOne" data-toggle="collapse" [attr.data-target]="'#collapse-' + i">
+            <span style="font-size: 2rem;">{{building.name ? building.name : 'Unknown building'}}</span>
+          </div>
+
+          <div [id]="'collapse-' + i" class="collapse" [ngClass]="{show: viewBuildings.length == 1}" data-parent="#accordion-buildings">
+            <div class="card-body">
+              <span class="d-block pl-4 px-2" style="font-size: 1.5rem;" *ngFor="let room of building.rooms" (click)="onRoomSelect(room.name)">{{room.name}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3" *ngIf="phase == 1">
+    <div class="col text-center">
+      <span class="display-4 d-block">Select the function of this device.</span>
+      <button class="btn btn-outline-light py-4 my-5 mx-auto w-75" (click)="onDeviceSelect(0)">
+        Inside kiosk
+      </button>
+      <button class="btn btn-outline-light py-4 my-5 mx-auto w-75" (click)="onDeviceSelect(1)">
+        Outside kiosk
+      </button>
+    </div>
+  </div>
+  <div class="row mt-3" *ngIf="phase == 2">
+    <div class="col text-center">
+      <span class="d-block display-3">Setup complete!</span>
+      <button class="btn btn-outline-success py-4 my-5 mx-auto w-75" (click)="onFinishSetup()">
+        Start
+      </button>
+    </div>
+  </div>
+</div>

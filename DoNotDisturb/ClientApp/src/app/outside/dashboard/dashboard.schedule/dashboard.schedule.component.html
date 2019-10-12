@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="row border-0 p-0">
+    <div class="col">
+      <span class="display-3 font-weight-bold">Today</span>
+    </div>
+  </div>
+  <div class="row display-4" *ngFor="let meeting of meetingsToday; last as isLast"
+    [ngClass]="{'border-0': isLast}">
+    <div class="col-6">{{meeting.title}}</div>
+    <div class="col-6 text-right">
+      {{meeting.startTime | date: 'h:mma'}} - {{meeting.endTime | date: 'h:mma'}}
+    </div>
+  </div>
+  <div class="row border-0" *ngIf="meetingsToday.length == 0">
+    <div class="col">
+      <span class="display-4">No meetings today</span>
+    </div>
+  </div>
+  <div class="row border-0 p-0">
+    <div class="col">
+      <span class="display-3 font-weight-bold">Tomorrow</span>
+    </div>
+  </div>
+  <div class="row display-4" *ngFor="let meeting of meetingsTomorrow; last as isLast"
+    [ngClass]="{'border-0': isLast}">
+    <div class="col-6">{{meeting.title}}</div>
+    <div class="col-6 text-right">
+      {{meeting.startTime | date: 'h:mma'}} - {{meeting.endTime | date: 'h:mma'}}
+    </div>
+  </div>
+</div>
+<div class="row border-0" *ngIf="meetingsTomorrow.length == 0">
+  <div class="col">
+    <span class="display-4">No meetings tomorrow</span>
+  </div>
+</div>

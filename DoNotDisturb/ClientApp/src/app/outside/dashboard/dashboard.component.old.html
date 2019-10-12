@@ -1,0 +1,73 @@
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    <div class="col-8" [ngClass]="currentMeeting ? 'bg-danger' : 'bg-success'">
+      <div class="container h-100 text-center">
+        <div class="row h-100 align-items-center">
+          <div class="col">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col">
+                  <span class="display-1">{{currentMeeting ? "Unavailable" : "Available"}}</span>
+                </div>
+              </div>
+              <div class="row" *ngIf="currentMeeting">
+                <div class="col">
+                  <span class="display-4">until {{currentMeeting.endTime | date: 'h:mm aa'}} ({{currentMeetingEndsIn}} minutes left)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 pt-5">
+      <div class="container-fluid h-100 d-flex flex-column">
+        <div class="row">
+          <div class="col text-center">
+            <span class="display-4">Today is {{date | date: 'EEEE'}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <span class="display-4">{{date | date}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <span class="display-4">{{date | date: 'h:mm aa'}}</span>
+          </div>
+        </div>
+        <div class="row mt-5 mb-3">
+          <div class="col text-center">
+            <span class="display-3 text-underline">Upcoming meetings</span>
+          </div>
+        </div>
+        <div class="row text-center" *ngIf="!isLoaded">
+          <div class="col">
+            <app-spinner></app-spinner>
+          </div>
+        </div>
+
+        <div class="row text-center flex-grow-1 justify-content-center">
+          <div class="col-10">
+             <div *ngIf="isLoaded && todayMeetings.length == 0" class="mt-4">
+               <span class="display-4">No more meetings for today</span>
+             </div>
+            <div *ngFor="let meeting of todayMeetings" class="meeting-box">
+              <span class="d-block meeting-title">{{meeting.title}}</span>
+              <span class="d-block meeting-time">{{meeting.startTime | date: 'h:mm aa'}} - {{meeting.endTime | date: 'h:mm aa'}}</span>
+            </div>
+            <div *ngIf="showTomorrow && tomorrowMeetings.length > 0" class="mt-5">
+              <span class="display-4 d-block text-underline">Tomorrow</span>
+              <div *ngFor="let meeting of tomorrowMeetings" class="meeting-box">
+                <span class="d-block meeting-title">{{meeting.title}}</span>
+                <span class="d-block meeting-time">{{meeting.startTime | date: 'h:mm aa'}} - {{meeting.endTime | date: 'h:mm aa'}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

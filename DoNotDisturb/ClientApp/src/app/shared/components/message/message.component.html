@@ -1,0 +1,26 @@
+<div #messageModal class="modal fade" id="message-modal" tabindex="-1" role="dialog" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content border-0">
+      <div class="modal-header"
+           [ngClass]="{'bg-info': currentMessage.type == messageType.Info, 'bg-danger': currentMessage.type == messageType.Error, 'bg-success': currentMessage.type == messageType.Success}">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col">
+              <img *ngIf="currentMessage.type == messageType.Info" alt="Info image" src="/assets/images/info.png"/>
+              <img *ngIf="currentMessage.type == messageType.Success" alt="Success image" src="/assets/images/ok.png"/>
+              <img *ngIf="currentMessage.type == messageType.Error" alt="Error image" src="/assets/images/cancel.png"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <span class="h2 d-block font-weight-bold text-center">{{currentMessage.title}}</span>
+        <span class="d-block text-center">{{currentMessage.message}}</span>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn mx-auto w-25" data-dismiss="modal"
+                [ngClass]="{'btn-info': currentMessage.type == messageType.Info, 'btn-danger': currentMessage.type == messageType.Error, 'btn-success': currentMessage.type == messageType.Success}">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

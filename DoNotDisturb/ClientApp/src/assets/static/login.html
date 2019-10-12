@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Index</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <script src="https://apis.google.com/js/platform.js?onload=start" async defer></script>
+  <script>
+      var auth2;
+      function start() {
+          gapi.load('auth2', function() {
+              auth2 = gapi.auth2.init({
+                  client_id: '657343126394-57o6cg2bids17g60arrs2vtklvrpjk3t.apps.googleusercontent.com',
+                  // Scopes to request in addition to 'profile' and 'email'
+                  //scope: 'additional_scope'
+                  scope: 'https://www.googleapis.com/auth/admin.directory.resource.calendar.readonly'
+              });
+          });
+      }
+  </script>
+</head>
+<body>
+<div class="container" style="height: 100vh;">
+  <div class="row d-flex align-items-center h-100">
+    <div class="col-6 text-center">
+      <button class="btn btn-success btn-lg" onclick="googleLogin()">
+        Login
+      </button>
+    </div>
+    <div class="col-6 text-center">
+      <button class="btn btn-danger btn-lg" onclick="googleLogout()">
+        Logout
+      </button>
+    </div>
+  </div>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    function googleLogin(){
+        auth2.grantOfflineAccess().then(signInCallback);
+    }
+    function signInCallback(authResult) {
+        if (authResult['code']) {
+            // Send the code to the server
+            $.ajax({
+                type: 'POST',
+                url: '/api/Account/AuthenticateOffline',
+                success: function(result) {
+                    // Handle or verify the server response.
+                    location.href = '/';
+                },
+                data: {code: authResult['code']}
+            });
+
+        } else {
+            // There was an error.
+            console.log('error');
+        }
+    }
+    function googleLogout(){
+        auth2.signOut();
+    }
+</script>
+</body>
+</html>
