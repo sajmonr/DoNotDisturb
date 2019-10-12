@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using DoNotDisturb.Configurations;
-using Microsoft.Extensions.Configuration;
 
 namespace DoNotDisturb.Services
 {

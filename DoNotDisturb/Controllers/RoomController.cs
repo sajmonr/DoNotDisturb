@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DoNotDisturb.Configurations;
 using DoNotDisturb.Models;
 using DoNotDisturb.Services;
 using Google.Apis.Admin.Directory.directory_v1.Data;
@@ -12,10 +13,12 @@ namespace DoNotDisturb.Controllers
     public class RoomController
     {
         private readonly GoogleService _googleService;
+        private readonly DemoConfiguration _demo;
 
-        public RoomController(GoogleService googleService)
+        public RoomController(GoogleService googleService, DemoConfiguration demoConfiguration)
         {
             _googleService = googleService;
+            _demo = demoConfiguration;
         }
 
         [HttpGet]
@@ -24,13 +27,24 @@ namespace DoNotDisturb.Controllers
             if (!_googleService.IsAuthorized)
                 return Array.Empty<MeetingRoom>();
 
-            return GetResources().Select(resource => new MeetingRoom
+            var rooms = GetResources().Select(resource => new MeetingRoom
             {
                 Name = resource.ResourceName,
                 Building = resource.BuildingId,
                 Description = resource.ResourceDescription,
                 Email = resource.ResourceEmail
-            }).ToArray();
+            }).ToList();
+
+            if(_demo.Enabled)
+                rooms.Insert(0, new MeetingRoom
+                {
+                    Name = _demo.RoomName,
+                    Building = "DEMO BUILDING",
+                    Description = "This meeting room is not a real world entity. This should not be used for production.",
+                    Email = "demo@donotuse.com"
+                });
+            
+            return rooms;
         } 
         
         private CalendarResource[] GetResources(IEnumerable<CalendarResource> start = null, string pageToken = "")

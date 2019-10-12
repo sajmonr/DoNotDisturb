@@ -26,14 +26,9 @@ namespace DoNotDisturb.SignalR.Hubs
         {
             var meetingPreloader = _preloader.Get<MeetingPreloader>();
 
-            if (meetingPreloader != null)
-            {
-                
-            }
-
-            return Array.Empty<Meeting>();
+            return meetingPreloader != null ? meetingPreloader.GetCurrent(room, maxResults) : Array.Empty<Meeting>();
         }
-
+        
         [HubMethodName("subscribe")]
         public async void Subscribe(string roomName, string deviceName, int deviceType)
         {
@@ -45,6 +40,8 @@ namespace DoNotDisturb.SignalR.Hubs
             };
 
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+            
+            _roomSubscription.Subscribe(roomName, device);
         }
 
         public override Task OnDisconnectedAsync(Exception exception)

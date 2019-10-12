@@ -26,9 +26,9 @@ namespace DoNotDisturb
         public void ConfigureServices(IServiceCollection services)
         {
             //Configurations
-            
             services.AddTransient<HeartbeatConfiguration, HeartbeatConfiguration>();
             services.AddTransient<GoogleConfiguration, GoogleConfiguration>();
+            services.AddTransient<DemoConfiguration, DemoConfiguration>();
             services.AddTransient<INotify, NotificationService>();
             
             services.AddSingleton<HeartbeatService>();

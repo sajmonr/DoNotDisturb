@@ -23,15 +23,15 @@ namespace DoNotDisturb.Services
 
         public void Unsubscribe(RoomDevice roomDevice)
         {
-            foreach (var keyValue in _subscribers)
+            foreach (var (key, value) in _subscribers)
             {
-                foreach (var device in keyValue.Value.ToArray())
+                foreach (var device in value.ToArray())
                 {
                     if (device.ConnectionId == roomDevice.ConnectionId)
                     {
                         lock (_deviceListLock)
                         {
-                            keyValue.Value.Remove(device);
+                            value.Remove(device);
                         }
                     }
                 }

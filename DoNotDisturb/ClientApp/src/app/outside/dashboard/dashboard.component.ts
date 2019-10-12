@@ -4,6 +4,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from '../../shared/services/message.service';
 import {RoomService} from '../../shared/services/room.service';
 import {RoomDevice, RoomDeviceType} from '../../shared/models/room-device.model';
+import {DateUtils} from "../../shared/utils/date-utils";
+import {CssUnknownRuleAst} from "codelyzer/angular/styles/cssAst";
 
 @Component({
   selector: 'app-dashboard',
@@ -25,9 +27,10 @@ export class DashboardComponent implements OnInit {
   private firstTimeLoad = false;
 
   private currentMeeting: Meeting;
-  private currentMeetingStarted = false;
+  private nextMeeting: Meeting;
+  private currentMeetingEndsIn = 0;
+  private nextMeetingStartsIn = 0;
 
-  private currentMeetingEndsIn: number;
   private meetings: Meeting[] = [];
 
   constructor(private activatedRoute: ActivatedRoute, private message: MessageService, private roomService: RoomService, private router: Router){
@@ -39,7 +42,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init outside')
     if(!this.room){
       this.message.error('You have not selected any room. You will not see any results. :(');
     }
@@ -50,8 +52,8 @@ export class DashboardComponent implements OnInit {
     this.roomService.connected.subscribe(this.onConnected.bind(this));
     this.roomService.disconnected.subscribe(this.onDisconnected.bind(this));
 
-    this.refreshDateTime();
-    this.clockTimer = setInterval(() => this.refreshDateTime(), 1000);
+    this.clockTick();
+    this.clockTimer = setInterval(() => this.clockTick(), 1000);
   }
 
   private onConnected(){
@@ -75,19 +77,50 @@ export class DashboardComponent implements OnInit {
     if(!this.firstTimeLoad)
       this.firstTimeLoad = true;
     console.log('INFO: Meetings refreshed on ' + new Date());
-    console.log(meetings);
-    this.isLoaded = true;
-    this.currentMeeting = null;
-    this.meetings = meetings;
 
-    this.refreshDateTime();
+    this.isLoaded = true;
+    this.meetings = meetings;
   }
 
-  private refreshDateTime(){
+  private clockTick(){
     this.date = new Date();
-    if(this.currentMeeting){
-      this.currentMeetingEndsIn = this.currentMeeting.endTime.getTime() - new Date().getTime();
+
+    this.checkForCurrentMeeting();
+    this.refreshTimes();
+  }
+
+  private refreshTimes(){
+      this.currentMeetingEndsIn = this.currentMeeting ? this.currentMeeting.endTime.getTime() - this.date.getTime() : 0;
+      this.nextMeetingStartsIn = this.nextMeeting ? this.nextMeeting.startTime.getTime() - this.date.getTime() : 0;
+
+      //console.log(this.nextMeetingStartsIn);
+    if(this.nextMeeting)
+      console.log(this.nextMeeting.startTime.getTime());
+    console.log(this.date.getTime());
+  }
+
+  private checkForCurrentMeeting(){
+    if(!this.meetings || this.meetings.length == 0)
+      return;
+
+    const current = this.getCurrentMeeting();
+    const next = this.getNextMeeting(current);
+
+    if(!(this.currentMeeting && this.currentMeeting.equal(current))){
+      this.currentMeeting = current;
+      this.nextMeeting = next;
     }
+  }
+
+  private getCurrentMeeting(): Meeting{
+    const current = this.meetings.filter(m => m.startTime <= this.date && m.endTime >= this.date);
+
+    return current.length > 0 ? current[0] : null;
+  }
+  private getNextMeeting(relativeMeeting: Meeting): Meeting{
+    const next = this.meetings.filter(m => relativeMeeting == null || !m.equal(relativeMeeting) && m.startTime >= relativeMeeting.endTime);
+
+    return next.length > 0 ? next[0] : null;
   }
 
   private loadRouteParams(){
@@ -100,7 +133,6 @@ export class DashboardComponent implements OnInit {
       this.showTomorrow =this.activatedRoute.snapshot.params['tomorrow'] == 1;
     }
   }
-
   private onDummyMeetingToggle(){
     if(!this.currentMeeting){
       this.createDummyCurrentMeeting();
@@ -108,7 +140,6 @@ export class DashboardComponent implements OnInit {
       //this.refreshMeetings();
     }
   }
-
   private createDummyCurrentMeeting(){
     const today = new Date();
     const meeting = new Meeting();

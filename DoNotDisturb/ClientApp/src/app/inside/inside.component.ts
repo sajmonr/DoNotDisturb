@@ -38,7 +38,6 @@ export class InsideComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log('init');
     if(!this.room){
       this.message.error('You have not selected any room. You will not see any results. :(');
     }
@@ -49,17 +48,16 @@ export class InsideComponent implements OnInit{
   }
 
   private onConnected(){
+    this.roomService.getMeetings(this.room, this.maxVisibleMeetings).then(meetings => this.refreshMeetings(meetings));
     this.roomService.subscribe(this.room, this.roomDevice).then(() => {
-      this.roomService.meetingsUpdated.subscribe(meetings => {
-        if(!this.loaded)
-          this.loaded = true;
-        this.refreshMeetings(meetings);
-      });
+      this.roomService.meetingsUpdated.subscribe(meetings => this.refreshMeetings(meetings));
     });
   }
 
   private refreshMeetings(meetings: Meeting[]){
-    console.log('meetings updated');
+    if(!this.loaded)
+      this.loaded = true;
+
     this.meetings = meetings;
     if(this.demoMode){
       this.setDemo();

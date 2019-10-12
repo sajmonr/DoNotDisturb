@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using DoNotDisturb.Configurations;
@@ -9,9 +8,6 @@ using DoNotDisturb.Services;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace DoNotDisturb.Preloaders
 {
@@ -22,45 +18,49 @@ namespace DoNotDisturb.Preloaders
         private readonly INotify _notifications;
         private readonly int _maxEvents;
 
+        private readonly DemoConfiguration _demo;
+        
         private readonly object _meetingsLock = new object();
         
         private Dictionary<string, List<Meeting>> _meetings = new Dictionary<string, List<Meeting>>();
 
-        public MeetingPreloader(GoogleConfiguration configuration, INotify notifications,
+        public MeetingPreloader(GoogleConfiguration configuration, DemoConfiguration demoConfiguration, INotify notifications,
             GoogleService googleService, RoomSubscriptionService roomSubscriptionService)
         {
             _google = googleService;
             _roomSubscription = roomSubscriptionService;
             _notifications = notifications;
+            _demo = demoConfiguration;
 
             _maxEvents = configuration.MaxCalendarEvents;
         }
 
         public IEnumerable<Meeting> Get(string room, int maxResults)
         {
-            return null;
+            var meetings = Array.Empty<Meeting>();
+
+            lock (_meetingsLock)
+            {
+                if (_meetings.ContainsKey(room))
+                    meetings = _meetings[room].Take(maxResults).ToArray();
+            }
+
+            return meetings;
         }
 
-        public IEnumerable<Meeting> GetCurrent(string room, int maxResults)
-        {
-            return null;
-        }
-        
+        public IEnumerable<Meeting> GetCurrent(string room, int maxResults) => MeetingsForRoom(room, maxResults).ToArray();
+
         public void Preload()
         {
             if (!CanRun()) return;
-            
-            if(_meetings.Count == 0)
-                _meetings.Add("CX-ThePub", new List<Meeting>());
-            
-            /*
+
             LoadSubscribers();
-            foreach (var key in _meetings.Keys)
-                PreloadForRoom(key);
-            */
             
-            var m = PreloadForRoom("CX-ThePub");
-            _notifications.Push(new MeetingsUpdatedNotification{Room = "CX-ThePub", Meetings = m});
+            foreach (var key in _meetings.Keys)
+            {
+                var m = PreloadForRoom(key);
+                _notifications.Push(new MeetingsUpdatedNotification{Room = key, Meetings = m});                
+            }
         }
         
         private void LoadSubscribers()
@@ -92,7 +92,11 @@ namespace DoNotDisturb.Preloaders
             if (!_meetings.ContainsKey(room))
                 return Array.Empty<Meeting>();
             
-            var meetings = MeetingsForRoom(room);
+            //Handle demo mode here and exit
+            if (_demo.Enabled && room == _demo.RoomName)
+                return PreloadForDemo();
+
+            var meetings = MeetingsForRoom(room, _maxEvents);
 
             lock (_meetingsLock)
             {
@@ -102,7 +106,7 @@ namespace DoNotDisturb.Preloaders
 
             return meetings.ToArray();
         }
-        private List<Meeting> MeetingsForRoom(string room)
+        private List<Meeting> MeetingsForRoom(string room, int maxMeetings)
         {
             var meetings = new List<Meeting>();
             
@@ -113,7 +117,7 @@ namespace DoNotDisturb.Preloaders
 
             if (!string.IsNullOrWhiteSpace(room) && resource != null)
                 meetings.AddRange(
-                    GetEvents(resource.ResourceEmail, _maxEvents).
+                    GetEvents(resource.ResourceEmail, maxMeetings).
                         Select(evt => new Meeting
                         {
                             Title = evt.Summary,
@@ -175,5 +179,72 @@ namespace DoNotDisturb.Preloaders
         }
         private bool CanRun() => _google.IsAuthorized;
 
+        private Meeting[] PreloadForDemo()
+        {
+            //Check if the first meeting is still in progress - if it is do nothing.
+            //Wait for X minutes after the meeting has ended - to showcase back-to-back transition.
+            //If the first meeting has passed then recreate all meetings again.
+            var first = _meetings.ContainsKey(_demo.RoomName) ? _meetings[_demo.RoomName].FirstOrDefault() : null;
+            if (first == null || first.StartTime <= DateTime.Now && first.EndTime.AddMinutes(_demo.WaitEndMinutes) <= DateTime.Now)
+            {
+                var meetings = CreateDemoMeetings();
+                lock (_meetingsLock)
+                {
+                    if (_meetings.ContainsKey(_demo.RoomName))
+                    {
+                        _meetings[_demo.RoomName].Clear();
+                        _meetings[_demo.RoomName].AddRange(meetings);
+                    }
+                    else
+                    {
+                        _meetings.Add(_demo.RoomName, meetings);
+                    }
+
+                }
+            }
+
+            return _meetings[_demo.RoomName].ToArray();
+        }
+        private List<Meeting> CreateDemoMeetings()
+        {
+            var meetings = new List<Meeting>();
+
+            
+            //Demo meetings
+            /*
+             * 1) Meeting starts in 2 minutes - duration 5 minutes
+             * 2) Meeting starts in 2 hours - duration 2 hours
+             * 3) Meeting starts tomorrow at 7AM - duration 1 hour
+             */
+
+            meetings.Add(new Meeting
+            {
+                Title = "Early demo meeting",
+                StartTime = DateTime.Now.AddMinutes(1),
+                EndTime = DateTime.Now.AddMinutes(6),
+                Owner = "John Doe"
+            });
+            
+            meetings.Add(new Meeting
+            {
+                Title = "Late demo meeting",
+                StartTime = DateTime.Now.AddHours(2),
+                EndTime = DateTime.Now.AddHours(4),
+                Owner = "Jane Doe"
+            });
+
+            var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day, 7, 0, 0);
+            
+            meetings.Add(new Meeting
+            {
+                Title = "Morning demo meeting",
+                StartTime = startTime,
+                EndTime = startTime.AddHours(1),
+                Owner = "John Doe"
+            });
+            
+            return meetings;
+        }
+        
     }
 }
