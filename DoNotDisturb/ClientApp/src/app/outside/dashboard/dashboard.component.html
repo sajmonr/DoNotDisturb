@@ -18,7 +18,7 @@
           <div class="col text-center">
             <div class="display-4">
               <span *ngIf="currentMeeting">{{currentMeetingEndsIn | time: true}} left</span>
-              <span *ngIf="!currentMeeting && nextMeeting && nextMeetingStartsIn < 1000 * 60 * 60">Next meeting starts in {{nextMeetingStartsIn | time}}</span>
+              <span *ngIf="!currentMeeting && nextMeeting && nextMeetingStartsIn < 1000 * 60 * 60 * 3">Next meeting starts in {{nextMeetingStartsIn | time}}</span>
             </div>
           </div>
         </div>

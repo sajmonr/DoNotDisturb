@@ -183,9 +183,8 @@ namespace DoNotDisturb.Preloaders
         {
             //Check if the first meeting is still in progress - if it is do nothing.
             //Wait for X minutes after the meeting has ended - to showcase back-to-back transition.
-            //If the first meeting has passed then recreate all meetings again.
             var first = _meetings.ContainsKey(_demo.RoomName) ? _meetings[_demo.RoomName].FirstOrDefault() : null;
-            if (first == null || first.StartTime <= DateTime.Now && first.EndTime.AddMinutes(_demo.WaitEndMinutes) <= DateTime.Now)
+            if (first == null)
             {
                 var meetings = CreateDemoMeetings();
                 lock (_meetingsLock)
@@ -200,6 +199,12 @@ namespace DoNotDisturb.Preloaders
                         _meetings.Add(_demo.RoomName, meetings);
                     }
 
+                }
+            }else if (first.EndTime < DateTime.Now)
+            {
+                lock (_meetingsLock)
+                {
+                    _meetings[_demo.RoomName].Remove(first);
                 }
             }
 
@@ -221,7 +226,7 @@ namespace DoNotDisturb.Preloaders
             {
                 Title = "Early demo meeting",
                 StartTime = DateTime.Now.AddMinutes(1),
-                EndTime = DateTime.Now.AddMinutes(6),
+                EndTime = DateTime.Now.AddMinutes(2),
                 Owner = "John Doe"
             });
             
