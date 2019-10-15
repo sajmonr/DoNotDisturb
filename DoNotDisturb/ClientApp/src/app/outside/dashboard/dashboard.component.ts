@@ -4,8 +4,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from '../../shared/services/message.service';
 import {RoomService} from '../../shared/services/room.service';
 import {RoomDevice, RoomDeviceType} from '../../shared/models/room-device.model';
-import {DateUtils} from "../../shared/utils/date-utils";
-import {CssUnknownRuleAst} from "codelyzer/angular/styles/cssAst";
 
 @Component({
   selector: 'app-dashboard',
@@ -92,11 +90,6 @@ export class DashboardComponent implements OnInit {
   private refreshTimes(){
       this.currentMeetingEndsIn = this.currentMeeting ? this.currentMeeting.endTime.getTime() - this.date.getTime() : 0;
       this.nextMeetingStartsIn = this.nextMeeting ? this.nextMeeting.startTime.getTime() - this.date.getTime() : 0;
-
-      //console.log(this.nextMeetingStartsIn);
-    if(this.nextMeeting)
-      console.log(this.nextMeeting.startTime.getTime());
-    console.log(this.date.getTime());
   }
 
   private checkForCurrentMeeting(){
@@ -118,7 +111,7 @@ export class DashboardComponent implements OnInit {
     return current.length > 0 ? current[0] : null;
   }
   private getNextMeeting(relativeMeeting: Meeting): Meeting{
-    const next = this.meetings.filter(m => relativeMeeting == null || !m.equal(relativeMeeting) && m.startTime >= relativeMeeting.endTime);
+    const next = this.meetings.filter(m => relativeMeeting == null && m.startTime > this.date || !m.equal(relativeMeeting) && m.startTime >= relativeMeeting.endTime);
 
     return next.length > 0 ? next[0] : null;
   }
