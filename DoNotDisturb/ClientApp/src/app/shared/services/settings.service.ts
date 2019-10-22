@@ -19,4 +19,9 @@ export class SettingsService{
       this.initialized.emit(true);
     });
   }
+
+  getRoomName(): string{
+    return localStorage['room'];
+  }
+
 }

@@ -6,6 +6,9 @@ export enum DatePrecision{
 export class DateUtils{
 
   static equal(left: Date, right: Date, precision?: DatePrecision): boolean{
+    if(!left || !right)
+      return false;
+
     if(!precision)
       precision = DatePrecision.Exact;
 
@@ -20,6 +23,10 @@ export class DateUtils{
     date.setDate(date.getDate() + days);
 
     return date;
+  }
+
+  static isToday(date: Date): boolean{
+    return date && this.equal(new Date(), date, DatePrecision.Day);
   }
 
 }

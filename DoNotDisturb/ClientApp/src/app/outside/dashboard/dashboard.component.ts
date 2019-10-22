@@ -111,7 +111,9 @@ export class DashboardComponent implements OnInit {
     return current.length > 0 ? current[0] : null;
   }
   private getNextMeeting(relativeMeeting: Meeting): Meeting{
-    const next = this.meetings.filter(m => relativeMeeting == null && m.startTime > this.date || !m.equal(relativeMeeting) && m.startTime >= relativeMeeting.endTime);
+    const next = relativeMeeting
+      ? this.meetings.filter(m => !m.equal(relativeMeeting) && m.startTime >= relativeMeeting.endTime)
+      : this.meetings.filter(m => m.startTime > this.date);
 
     return next.length > 0 ? next[0] : null;
   }

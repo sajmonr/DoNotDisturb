@@ -101,8 +101,6 @@ export class DashboardComponent implements OnInit{
   }
 
   private refreshProgressColor(){
-    //this.progressColor = this.meetingProgress > 0.8 ? this.progressColorEnd : this.progressColorStart;
-
     let start;
     let end;
     let progress = this.meetingProgress;

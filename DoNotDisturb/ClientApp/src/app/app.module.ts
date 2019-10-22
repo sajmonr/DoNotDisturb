@@ -23,6 +23,9 @@ import {NgCircleProgressModule} from 'ng-circle-progress';
 import { TimeAlertComponent } from './inside/dashboard/time-alert/time-alert.component';
 import {SetupComponent} from './setup/setup.component';
 import {FormsModule} from '@angular/forms';
+import {GlobalWelcomeComponent} from "./inside/welcome/global-welcome/global-welcome.component";
+import {EmptyWelcomeComponent} from "./inside/welcome/empty-welcome/empty-welcome.component";
+import {PersonalWelcomeComponent} from "./inside/welcome/personal-welcome/personal-welcome.component";
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import {FormsModule} from '@angular/forms';
     TimePipe,
     WelcomeComponent,
     TimeAlertComponent,
-    SetupComponent
+    SetupComponent,
+    GlobalWelcomeComponent,
+    EmptyWelcomeComponent,
+    PersonalWelcomeComponent
   ],
   imports: [
     BrowserModule,

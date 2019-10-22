@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from '../shared/services/message.service';
 import {RoomService} from '../shared/services/room.service';
 import {TimingService} from '../shared/services/timing.service';
+import {DatePrecision, DateUtils} from "../shared/utils/date-utils";
 
 @Component({
   selector: 'app-inside',
@@ -62,12 +63,12 @@ export class InsideComponent implements OnInit{
     let currentMeeting;
     let nextMeeting;
 
-    if(this.isCurrentMeeting(meetings[0])){
+    if(meetings.length > 0 && this.isCurrentMeeting(meetings[0])){
       currentMeeting = meetings[0];
-      nextMeeting = meetings[1];
+      nextMeeting = meetings.length > 1 ? meetings[1] : null;
     }else{
       currentMeeting = null;
-      nextMeeting = meetings[0];
+      nextMeeting = meetings.length > 0 ? meetings[0] : null;
     }
 
     if(!this.currentMeeting || !this.currentMeeting.equal(currentMeeting))
@@ -93,12 +94,12 @@ export class InsideComponent implements OnInit{
   }
 
   private isCurrentMeeting(meeting: Meeting): boolean{
+    if(!meeting)
+      return false;
+
     const today = new Date();
 
-    return this.isDateTheSame(today, meeting.startTime) && meeting.startTime.getTime() < today.getTime() && meeting.endTime.getTime() > today.getTime();
-  }
-  private isDateTheSame(left: Date, right: Date): boolean{
-    return left.getDate() == right.getDate() && left.getMonth() == right.getMonth() && left.getFullYear() == right.getFullYear();
+    return DateUtils.equal(today, meeting.startTime, DatePrecision.Day) && today.getTime() >= meeting.startTime.getTime() && today.getTime() <= meeting.endTime.getTime();
   }
 
 }

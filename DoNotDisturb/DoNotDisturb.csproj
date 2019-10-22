@@ -30,6 +30,12 @@
         <Content Include="ClientApp\src\app\inside\dashboard\time-alert\time-alert.component.less" />
         <Content Include="ClientApp\src\app\inside\inside.component.html" />
         <Content Include="ClientApp\src\app\inside\inside.component.less" />
+        <Content Include="ClientApp\src\app\inside\welcome\empty-welcome\empty-welcome.component.html" />
+        <Content Include="ClientApp\src\app\inside\welcome\empty-welcome\empty-welcome.component.less" />
+        <Content Include="ClientApp\src\app\inside\welcome\global-welcome\global-welcome.component.html" />
+        <Content Include="ClientApp\src\app\inside\welcome\global-welcome\global-welcome.component.less" />
+        <Content Include="ClientApp\src\app\inside\welcome\personal-welcome\personal-welcome.component.html" />
+        <Content Include="ClientApp\src\app\inside\welcome\personal-welcome\personal-welcome.component.less" />
         <Content Include="ClientApp\src\app\inside\welcome\welcome.component.html" />
         <Content Include="ClientApp\src\app\inside\welcome\welcome.component.less" />
         <Content Include="ClientApp\src\app\outside\dashboard\dashboard.component.html" />
@@ -57,6 +63,9 @@
         <Content Include="Properties\PublishProfiles\Public to local folder.pubxml.user" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+        <None Include="ClientApp\src\app\inside\welcome\empty-welcome\empty-welcome.component.ts" />
+        <None Include="ClientApp\src\app\inside\welcome\global-welcome\global-welcome.component.ts" />
+        <None Include="ClientApp\src\app\inside\welcome\personal-welcome\personal-welcome.component.ts" />
         <None Include="ClientApp\src\app\shared\services\events.service.ts" />
         <None Include="ClientApp\src\app\shared\utils\date-utils.ts" />
     </ItemGroup>

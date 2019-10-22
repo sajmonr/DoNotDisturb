@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid text-dark">
   <div class="row border-0 p-0">
     <div class="col">
       <span class="display-3 font-weight-bold">Today</span>
@@ -8,7 +8,7 @@
     [ngClass]="{'border-0': isLast}">
     <div class="col-6">{{meeting.title}}</div>
     <div class="col-6 text-right">
-      {{meeting.startTime | date: 'h:mma'}} - {{meeting.endTime | date: 'h:mma'}}
+      {{meeting.startTime | date: 'h:mma'}} - {{meeting.endTime | date: 'shortTime'}}
     </div>
   </div>
   <div class="row border-0" *ngIf="meetingsToday.length == 0">

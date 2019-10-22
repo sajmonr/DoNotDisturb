@@ -9,7 +9,6 @@ export class AppComponent implements OnInit{
   title = 'ClientApp';
 
   ngOnInit(): void {
-    console.log('done');
   }
 
 }

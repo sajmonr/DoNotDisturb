@@ -1,7 +1,3 @@
-<div class="container-fluid h-100">
-  <div class="row my-auto">
-    <div class="col">
-      <span class="d-block text-center display-1 text-white">Welcome</span>
-    </div>
-  </div>
-</div>
+<app-welcome-empty *ngIf="welcome == welcomeTypes.Empty"></app-welcome-empty>
+<app-welcome-global *ngIf="welcome == welcomeTypes.Global" [meeting]="nextMeeting" [room]="room"></app-welcome-global>
+<app-welcome-personal *ngIf="welcome == welcomeTypes.Personal" [meeting]="nextMeeting" [room]="room"></app-welcome-personal>
