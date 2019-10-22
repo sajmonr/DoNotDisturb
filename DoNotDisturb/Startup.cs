@@ -63,7 +63,7 @@ namespace DoNotDisturb
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            app.UseCors(o => o.WithOrigins("http://localhost:4200", "http://lvh.me:5001", "http://lvh.me:5000", "http://lvh.me:4200", "http://*.masseymansion.com").SetIsOriginAllowedToAllowWildcardSubdomains().AllowCredentials().AllowAnyHeader());
+            app.UseCors(o => o.WithOrigins("http://localhost:4200", "http://lvh.me:5001", "http://lvh.me:5000", "http://*.ngrok.io", "http://lvh.me:4200", "http://*.masseymansion.com").SetIsOriginAllowedToAllowWildcardSubdomains().AllowCredentials().AllowAnyHeader());
 
             app.UseSignalR(r => { r.MapHub<RoomHub>("/room"); });
             

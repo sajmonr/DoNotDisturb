@@ -8,7 +8,6 @@ import {SetupComponent} from './setup/setup.component';
 const routes: Routes = [
   {path: '', redirectTo: 'outside', pathMatch: 'full'},
   {path: 'inside', component: InsideComponent},
-  {path: 'inside/:mode', component: InsideComponent},
   {path: 'outside', children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
       {path: 'dashboard', component: OutsideDashboardComponent},

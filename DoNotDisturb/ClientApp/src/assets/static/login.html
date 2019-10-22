@@ -11,9 +11,7 @@
           gapi.load('auth2', function() {
               auth2 = gapi.auth2.init({
                   client_id: '657343126394-57o6cg2bids17g60arrs2vtklvrpjk3t.apps.googleusercontent.com',
-                  // Scopes to request in addition to 'profile' and 'email'
-                  //scope: 'additional_scope'
-                  scope: 'https://www.googleapis.com/auth/admin.directory.resource.calendar.readonly'
+                  scope: 'https://www.googleapis.com/auth/admin.directory.resource.calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly'
               });
           });
       }

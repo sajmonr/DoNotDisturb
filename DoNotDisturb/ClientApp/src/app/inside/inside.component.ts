@@ -13,7 +13,6 @@ import {TimingService} from '../shared/services/timing.service';
 })
 export class InsideComponent implements OnInit{
   @ViewChild('scheduleModal')scheduleModal: ElementRef;
-  private demoMode = false;
   private roomDevice: RoomDevice;
   private room: string;
   private loaded = false;
@@ -59,10 +58,7 @@ export class InsideComponent implements OnInit{
       this.loaded = true;
 
     this.meetings = meetings;
-    if(this.demoMode){
-      this.setDemo();
-      return;
-    }
+
     let currentMeeting;
     let nextMeeting;
 
@@ -80,26 +76,6 @@ export class InsideComponent implements OnInit{
       this.nextMeeting = nextMeeting;
   }
 
-  private setDemo(){
-    let m = new Meeting();
-
-    m.owner = 'Adam Simonicek';
-    m.title = 'Demo meeting';
-    m.startTime = new Date();
-    m.endTime = new Date();
-
-    //m.startTime.setTime(m.startTime.getTime() - 1000 * 60 * 4);
-    m.endTime.setTime(m.startTime.getTime() + 1000 * 60 * 5);
-
-    if(!this.currentMeeting || this.currentMeeting.title != m.title){
-      this.currentMeeting = m;
-    }
-
-    if(this.currentMeeting && this.currentMeeting.endTime.getTime() < new Date().getTime())
-      this.currentMeeting = null;
-
-  }
-
   private showSchedule(){
     //@ts-ignore
     $(this.scheduleModal.nativeElement).modal('show');
@@ -114,9 +90,6 @@ export class InsideComponent implements OnInit{
     if(!room)
       this.router.navigate(['/setup']);
     this.room = room;
-
-    const mode = this.activatedRoute.snapshot.params['mode'];
-    this.demoMode = mode && mode == 'demo';
   }
 
   private isCurrentMeeting(meeting: Meeting): boolean{

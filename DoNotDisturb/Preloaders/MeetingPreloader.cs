@@ -24,8 +24,11 @@ namespace DoNotDisturb.Preloaders
         
         private Dictionary<string, List<Meeting>> _meetings = new Dictionary<string, List<Meeting>>();
 
-        public MeetingPreloader(GoogleConfiguration configuration, DemoConfiguration demoConfiguration, INotify notifications,
-            GoogleService googleService, RoomSubscriptionService roomSubscriptionService)
+        public MeetingPreloader(GoogleConfiguration configuration, 
+            DemoConfiguration demoConfiguration, 
+            INotify notifications,
+            GoogleService googleService, 
+            RoomSubscriptionService roomSubscriptionService)
         {
             _google = googleService;
             _roomSubscription = roomSubscriptionService;
@@ -49,7 +52,6 @@ namespace DoNotDisturb.Preloaders
         }
 
         public IEnumerable<Meeting> GetCurrent(string room, int maxResults) => MeetingsForRoom(room, maxResults).ToArray();
-
         public void Preload()
         {
             if (!CanRun()) return;
@@ -62,7 +64,6 @@ namespace DoNotDisturb.Preloaders
                 _notifications.Push(new MeetingsUpdatedNotification{Room = key, Meetings = m});                
             }
         }
-        
         private void LoadSubscribers()
         {
             var keysToDelete = new List<string>();
@@ -225,8 +226,8 @@ namespace DoNotDisturb.Preloaders
             meetings.Add(new Meeting
             {
                 Title = "Early demo meeting",
-                StartTime = DateTime.Now.AddMinutes(1),
-                EndTime = DateTime.Now.AddMinutes(2),
+                StartTime = DateTime.Now.AddMinutes(2),
+                EndTime = DateTime.Now.AddMinutes(7),
                 Owner = "John Doe"
             });
             
