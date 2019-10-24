@@ -24,7 +24,6 @@ export class MessageService{
     this.messageReceived.emit(this.constructMessage(title, message, MessageType.Success));
   }
   hideMessage(){
-    console.log('hiding message');
     this.hide.emit();
   }
   private constructMessage(title: string, message: string, type: MessageType): Message{

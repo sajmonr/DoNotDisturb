@@ -60,28 +60,27 @@ export class InsideComponent implements OnInit{
       this.loaded = true;
 
     this.meetings = meetings;
-
+    this.updateCurrentMeeting();
+  }
+  private tick(){
+    this.updateCurrentMeeting();
+  }
+  private updateCurrentMeeting(){
     let currentMeeting;
     let nextMeeting;
 
-    if(meetings.length > 0 && this.isCurrentMeeting(meetings[0])){
-      currentMeeting = meetings[0];
-      nextMeeting = meetings.length > 1 ? meetings[1] : null;
+    if(this.meetings.length > 0 && this.isCurrentMeeting(this.meetings[0])){
+      currentMeeting = this.meetings[0];
+      nextMeeting = this.meetings.length > 1 ? this.meetings[1] : null;
     }else{
       currentMeeting = null;
-      nextMeeting = meetings.length > 0 ? meetings[0] : null;
+      nextMeeting = this.meetings.length > 0 ? this.meetings[0] : null;
     }
 
     if(!this.currentMeeting || !this.currentMeeting.equal(currentMeeting))
       this.currentMeeting = currentMeeting;
     if(!this.nextMeeting || !this.nextMeeting.equal(nextMeeting))
       this.nextMeeting = nextMeeting;
-
-    console.log('updated');
-  }
-  private tick(){
-    console.log(this.currentMeeting);
-    console.log(this.nextMeeting);
   }
   private showSchedule(){
     //@ts-ignore
