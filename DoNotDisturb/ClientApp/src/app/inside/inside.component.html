@@ -1,5 +1,5 @@
-<app-inside-dashboard *ngIf="false && currentMeeting" [meeting]="currentMeeting" [room]="room"></app-inside-dashboard>
-<app-inside-welcome *ngIf="true && loaded && !currentMeeting" [nextMeeting]="nextMeeting" [room]="room"></app-inside-welcome>
+<app-inside-dashboard *ngIf="currentMeeting" [meeting]="currentMeeting" [room]="room"></app-inside-dashboard>
+<app-inside-welcome *ngIf="loaded && !currentMeeting" [nextMeeting]="nextMeeting" [room]="room"></app-inside-welcome>
 <div class="container-fluid h-100" *ngIf="!loaded">
   <div class="row h-100 align-items-center">
     <div class="col text-center">
@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div #scheduleModal class="modal fade modal-fullscreen" id="modal-schedule" tabindex="-1" role="dialog" aria-hidden="true">
+<div #scheduleModal class="modal fade modal-fullscreen text-dark" id="modal-schedule" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header border-0">

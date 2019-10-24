@@ -89,7 +89,9 @@ export class DashboardComponent implements OnInit{
   }
 
   private hideModalAlert(){
-    this.message.hideMessage();
+    console.log('hide');
+    //this.message.hideMessage();
+    //this.limitedTimeAlert = false;
   }
 
   private showFullsreenAlert(){
@@ -122,7 +124,7 @@ export class DashboardComponent implements OnInit{
   }
   private playAlert(){
     this.alertPlayCount++;
-    this.alert.nativeElement.play()
+    this.alert.nativeElement.play();
   }
   private endMeeting(){
     this.resetRoom();

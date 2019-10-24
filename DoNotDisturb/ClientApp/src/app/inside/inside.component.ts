@@ -45,6 +45,7 @@ export class InsideComponent implements OnInit{
       this.onConnected();
 
     this.roomService.connected.subscribe(this.onConnected.bind(this));
+    this.timing.tick.subscribe(this.tick.bind(this));
   }
 
   private onConnected(){
@@ -75,8 +76,13 @@ export class InsideComponent implements OnInit{
       this.currentMeeting = currentMeeting;
     if(!this.nextMeeting || !this.nextMeeting.equal(nextMeeting))
       this.nextMeeting = nextMeeting;
-  }
 
+    console.log('updated');
+  }
+  private tick(){
+    console.log(this.currentMeeting);
+    console.log(this.nextMeeting);
+  }
   private showSchedule(){
     //@ts-ignore
     $(this.scheduleModal.nativeElement).modal('show');
