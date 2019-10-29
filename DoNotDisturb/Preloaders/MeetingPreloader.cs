@@ -185,7 +185,7 @@ namespace DoNotDisturb.Preloaders
             //Check if the first meeting is still in progress - if it is do nothing.
             //Wait for X minutes after the meeting has ended - to showcase back-to-back transition.
             var first = _meetings.ContainsKey(_demo.RoomName) ? _meetings[_demo.RoomName].FirstOrDefault() : null;
-            if (first == null)
+            if (first == null || first.StartTime > DateTime.Now.AddHours(1))
             {
                 var meetings = CreateDemoMeetings();
                 lock (_meetingsLock)

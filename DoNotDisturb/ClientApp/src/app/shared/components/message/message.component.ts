@@ -32,7 +32,7 @@ export class MessageComponent implements OnInit{
 
   private hide(){
     //@ts-ignore
-    $(this.messageModal.nametiveElement).modal('hide');
+    $(this.messageModal.nativeElement).modal('hide');
   }
 
   private clearMessage(){

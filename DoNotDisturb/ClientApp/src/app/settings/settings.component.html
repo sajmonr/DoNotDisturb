@@ -1,12 +1,23 @@
 <div class="container">
-  <div class="row">
-    <div class="col">
-      <a routerLink="/">Home</a>
+  <div class="row mt-4">
+    <div class="col text-right">
+      <a routerLink="/" class="btn btn-primary btn-lg" role="button">Return</a>
     </div>
   </div>
   <div class="row">
     <div class="col">
-      <button class="btn btn-light" (click)="onRoomReset()">Reset room</button>
+      <span class="display-4 text-white">Settings</span>
+      <table class="table table-borderless text-white">
+        <tr>
+          <td>Settings name</td>
+          <td>Seetings value</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right">
+      <button class="btn btn-danger btn-lg" (click)="onRoomReset()">Reset</button>
     </div>
   </div>
 </div>

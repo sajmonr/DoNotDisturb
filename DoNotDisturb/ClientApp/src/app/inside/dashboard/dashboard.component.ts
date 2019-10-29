@@ -64,12 +64,10 @@ export class DashboardComponent implements OnInit{
 
     if(this.alertPlayCount == 0 && this.meetingEndsIn <= 1000 * 60)
       this.playAlert();
-    if(this.meetingEndsIn <= 1000 * 30)
+    if(this.meetingEndsIn <= 1000 * 30 && !this.remainingTimeAlert)
       this.showFullsreenAlert();
     if(this.meetingEndsIn <= 1000 * 60 * 7 && !this.limitedTimeAlert)
       this.showModalAlert();
-    if(this.meetingEndsIn <= 1000 * 60 * 0.5 && this.limitedTimeAlert)
-      this.hideModalAlert();
   }
   private calculateMeetingProgress(){
     if(!this.meeting)
@@ -85,7 +83,7 @@ export class DashboardComponent implements OnInit{
   private showModalAlert(){
     this.limitedTimeAlert = true;
     const minutes = Math.ceil(this.meetingEndsIn / 1000 / 60);
-    this.message.error(minutes + ' minutes remaining', 'Meeting Ending Soon');
+    this.message.error(`${minutes} minutes remaining.`, 'Meeting ending soon');
   }
 
   private hideModalAlert(){
@@ -93,6 +91,7 @@ export class DashboardComponent implements OnInit{
 }
 
   private showFullsreenAlert(){
+    this.hideModalAlert();
     this.remainingTimeAlert = true;
   }
 

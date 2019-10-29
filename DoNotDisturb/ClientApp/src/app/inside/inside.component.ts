@@ -6,6 +6,7 @@ import {MessageService} from '../shared/services/message.service';
 import {RoomService} from '../shared/services/room.service';
 import {TimingService} from '../shared/services/timing.service';
 import {DatePrecision, DateUtils} from "../shared/utils/date-utils";
+import {NEXT} from "@angular/core/src/render3/interfaces/view";
 
 @Component({
   selector: 'app-inside',
@@ -66,16 +67,8 @@ export class InsideComponent implements OnInit{
     this.updateCurrentMeeting();
   }
   private updateCurrentMeeting(){
-    let currentMeeting;
-    let nextMeeting;
-
-    if(this.meetings.length > 0 && this.isCurrentMeeting(this.meetings[0])){
-      currentMeeting = this.meetings[0];
-      nextMeeting = this.meetings.length > 1 ? this.meetings[1] : null;
-    }else{
-      currentMeeting = null;
-      nextMeeting = this.meetings.length > 0 ? this.meetings[0] : null;
-    }
+    const currentMeeting = this.getCurrentMeeting();
+    const nextMeeting = this.getNextMeeting();
 
     if(!this.currentMeeting || !this.currentMeeting.equal(currentMeeting))
       this.currentMeeting = currentMeeting;
@@ -98,6 +91,28 @@ export class InsideComponent implements OnInit{
     this.room = room;
   }
 
+  private getCurrentMeeting(): Meeting{
+    let currentMeeting: Meeting = null;
+
+    this.meetings.forEach(meeting => {
+      if(this.isCurrentMeeting(meeting)){
+        currentMeeting = meeting;
+        return;
+      }
+    });
+
+    return currentMeeting;
+  }
+  private getNextMeeting(): Meeting{
+    let nextMeeting: Meeting = null;
+
+    this.meetings.forEach(meeting => {
+      if(!this.isCurrentMeeting(meeting) && (!nextMeeting || nextMeeting.startTime > meeting.startTime))
+        nextMeeting = meeting;
+    });
+
+    return nextMeeting;
+  }
   private isCurrentMeeting(meeting: Meeting): boolean{
     if(!meeting)
       return false;
