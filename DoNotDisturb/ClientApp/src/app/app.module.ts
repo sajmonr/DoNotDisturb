@@ -26,6 +26,8 @@ import {FormsModule} from '@angular/forms';
 import {GlobalWelcomeComponent} from "./inside/welcome/global-welcome/global-welcome.component";
 import {EmptyWelcomeComponent} from "./inside/welcome/empty-welcome/empty-welcome.component";
 import {PersonalWelcomeComponent} from "./inside/welcome/personal-welcome/personal-welcome.component";
+import {ModalService} from "./shared/services/modal.service";
+import {ToastService} from "./shared/services/toast.service";
 
 @NgModule({
   declarations: [
@@ -58,7 +60,7 @@ import {PersonalWelcomeComponent} from "./inside/welcome/personal-welcome/person
     }),
     FormsModule
   ],
-  providers: [HttpClient, SettingsService, CalendarService, MessageService, RoomService, TimingService],
+  providers: [HttpClient, SettingsService, CalendarService, MessageService, ModalService, ToastService, RoomService, TimingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

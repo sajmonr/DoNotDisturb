@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit{
     if(this.alertPlayCount == 0 && this.meetingEndsIn <= 1000 * 60)
       this.playAlert();
     if(this.meetingEndsIn <= 1000 * 30 && !this.remainingTimeAlert)
-      this.showFullsreenAlert();
+      this.showFullscreenAlert();
     if(this.meetingEndsIn <= 1000 * 60 * 7 && !this.limitedTimeAlert)
       this.showModalAlert();
   }
@@ -87,10 +87,10 @@ export class DashboardComponent implements OnInit{
   }
 
   private hideModalAlert(){
-    this.message.hideMessage();
+    this.message.hideModal();
 }
 
-  private showFullsreenAlert(){
+  private showFullscreenAlert(){
     this.hideModalAlert();
     this.remainingTimeAlert = true;
   }

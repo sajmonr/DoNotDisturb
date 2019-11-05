@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
 import {Message, MessageType} from "../../models/message.model";
-import {MessageService} from "../../services/message.service";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'app-message',
@@ -12,12 +12,12 @@ export class MessageComponent implements OnInit{
   private currentMessage: Message;
   @ViewChild('messageModal')messageModal: ElementRef;
 
-  constructor(private messageService: MessageService){}
+  constructor(private modal: ModalService){}
 
   ngOnInit(): void {
     this.clearMessage();
-    this.messageService.messageReceived.subscribe(message => this.onMessageReceived(message));
-    this.messageService.hide.subscribe(this.hide.bind(this));
+    this.modal.messageReceived.subscribe(message => this.onMessageReceived(message));
+    this.modal.hide.subscribe(this.hide.bind(this));
   }
 
   private onMessageReceived(message: Message){

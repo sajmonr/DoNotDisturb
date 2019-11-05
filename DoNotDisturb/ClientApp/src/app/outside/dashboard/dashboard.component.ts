@@ -31,7 +31,10 @@ export class DashboardComponent implements OnInit {
 
   private meetings: Meeting[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private message: MessageService, private roomService: RoomService, private router: Router){
+  constructor(private activatedRoute: ActivatedRoute,
+              private message: MessageService,
+              private roomService: RoomService,
+              private router: Router){
     this.loadRouteParams();
 
     this.roomDevice = new RoomDevice();
@@ -119,32 +122,11 @@ export class DashboardComponent implements OnInit {
   }
 
   private loadRouteParams(){
-    const room = localStorage.getItem('room');
-    if(!room)
-      this.router.navigate(['/setup']);
+    this.room = localStorage.getItem('room');
 
-    this.room = room;
     if(this.activatedRoute.snapshot.params['tomorrow']){
       this.showTomorrow =this.activatedRoute.snapshot.params['tomorrow'] == 1;
     }
-  }
-  private onDummyMeetingToggle(){
-    if(!this.currentMeeting){
-      this.createDummyCurrentMeeting();
-    }else{
-      //this.refreshMeetings();
-    }
-  }
-  private createDummyCurrentMeeting(){
-    const today = new Date();
-    const meeting = new Meeting();
-
-    meeting.startTime = new Date(today.getTime() - 1000 * 60 * 60);
-    meeting.endTime = new Date(today.getTime() + 1000 * 60 * 58);
-    meeting.title = "Dummy meeting. Nothing here. :)";
-
-    this.currentMeeting = meeting;
-    this.meetings.splice(0, 0, meeting);
   }
 
   private showSchedule(){

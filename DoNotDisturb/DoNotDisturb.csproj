@@ -66,7 +66,10 @@
         <None Include="ClientApp\src\app\inside\welcome\empty-welcome\empty-welcome.component.ts" />
         <None Include="ClientApp\src\app\inside\welcome\global-welcome\global-welcome.component.ts" />
         <None Include="ClientApp\src\app\inside\welcome\personal-welcome\personal-welcome.component.ts" />
+        <None Include="ClientApp\src\app\shared\guards\location.guard.ts" />
         <None Include="ClientApp\src\app\shared\services\events.service.ts" />
+        <None Include="ClientApp\src\app\shared\services\modal.service.ts" />
+        <None Include="ClientApp\src\app\shared\services\toast.service.ts" />
         <None Include="ClientApp\src\app\shared\utils\date-utils.ts" />
     </ItemGroup>
 

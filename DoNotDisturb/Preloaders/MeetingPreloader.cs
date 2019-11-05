@@ -51,7 +51,17 @@ namespace DoNotDisturb.Preloaders
             return meetings;
         }
 
-        public IEnumerable<Meeting> GetCurrent(string room, int maxResults) => MeetingsForRoom(room, maxResults).ToArray();
+        public IEnumerable<Meeting> GetCurrent(string room, int maxResults)
+        {
+            if (!_demo.Enabled || room != _demo.RoomName) 
+                return MeetingsForRoom(room, maxResults).ToArray();
+            
+            if (!_meetings.ContainsKey(_demo.RoomName))
+                PreloadForDemo();
+            
+            return Get(_demo.RoomName, maxResults);
+
+        }
         public void Preload()
         {
             if (!CanRun()) return;

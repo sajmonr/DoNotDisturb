@@ -1,33 +1,42 @@
-import {EventEmitter, Output} from "@angular/core";
+import {Injectable} from "@angular/core";
+import {ModalService} from "./modal.service";
+import {ToastService} from "./toast.service";
 import {Message, MessageType} from "../models/message.model";
 
+@Injectable()
 export class MessageService{
-  @Output()messageReceived = new EventEmitter<Message>();
-  @Output()hide = new EventEmitter();
 
-  info(message: string, title?: string){
-    if(!title) {
-      title = 'FYI';
-    }
-    this.messageReceived.emit(this.constructMessage(title, message, MessageType.Info));
+  constructor(private modal: ModalService, private toast: ToastService){}
+
+  info(message: string, title?: string, type?: NotificationType){
+    this.emitMessage(this.constructMessage(message, MessageType.Info, title), type);
   }
-  error(message: string, title?: string){
-    if(!title) {
-      title = 'Uh-oh';
-    }
-    this.messageReceived.emit(this.constructMessage(title, message, MessageType.Error));
+  error(message: string, title?: string, type?: NotificationType){
+    this.emitMessage(this.constructMessage(message, MessageType.Error, title), type);
   }
-  success(message: string, title?: string){
-    if(!title) {
-      title = 'Success';
-    }
-    this.messageReceived.emit(this.constructMessage(title, message, MessageType.Success));
+  success(message: string, title?: string, type?: NotificationType){
+    this.emitMessage(this.constructMessage(message, MessageType.Success, title), type);
   }
-  hideMessage(){
-    this.hide.emit();
+
+  hideModal(){
+    this.modal.hideModal();
   }
-  private constructMessage(title: string, message: string, type: MessageType): Message{
+
+  private emitMessage(message: Message, notificationType?: NotificationType){
+    if(!notificationType)
+      notificationType = NotificationType.Modal;
+
+    if(notificationType == NotificationType.Modal)
+      this.modal.showModal(message);
+    else
+      this.toast.showToast(message);
+  }
+
+  private constructMessage(message: string, type: MessageType, title?: string): Message{
     const msg = new Message();
+
+    if(!title || title == '')
+      title = this.getDefaultTitle(type);
 
     msg.title = title;
     msg.message = message;
@@ -35,4 +44,19 @@ export class MessageService{
 
     return msg;
   }
+
+  private getDefaultTitle(type: MessageType): string{
+    switch (type) {
+      case MessageType.Error:
+        return 'Uh-oh';
+      case MessageType.Info:
+        return 'FIY';
+      case MessageType.Success:
+        return 'Success';
+    }
+  }
+
+}
+export enum NotificationType{
+  Modal, Toast
 }
