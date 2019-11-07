@@ -3,7 +3,7 @@
     <div class="col-6 text-center">
       <circle-progress
         [percent]="(1 - meetingProgress) * 100"
-        radius="150"
+        radius="100"
         outerStrokeWidth="20"
         innerStrokeWidth="0"
         [outerStrokeColor]="progressColor"
@@ -11,7 +11,7 @@
         [showUnits]="false"
         [title]="meetingEndsIn | time: true"
         titleColor="#ffffff"
-        titleFontSize="25"
+        titleFontSize="22"
       ></circle-progress>
     </div>
     <div class="col-6">
