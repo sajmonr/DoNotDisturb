@@ -3,7 +3,7 @@
 <div class="container-fluid h-100" *ngIf="!loaded">
   <div class="row h-100 align-items-center">
     <div class="col text-center">
-      <span class="display-1 text-white d-block">Loading meetings</span>
+      <span class="h1 text-white d-block">Loading meetings</span>
       <app-spinner [color]="'white'"></app-spinner>
     </div>
   </div>
@@ -14,7 +14,7 @@
       <div class="col text-center">
         <div class="d-inline-block" style="cursor: pointer;" (click)="showSchedule()" data-target="#modal-schedule">
           <img src="/assets/images/icon-up.png"/>
-          <span class="d-block display-3 text-white">View Schedule</span>
+          <span class="d-block h4 text-white">View Schedule</span>
         </div>
       </div>
     </div>
@@ -29,7 +29,7 @@
           <div class="row">
             <div class="col-4"></div>
             <div class="col-4 text-center">
-              <span class="display-3">Upcoming meetings</span>
+              <span class="h4">Upcoming meetings</span>
             </div>
             <div class="col-4 text-right">
               <button type="button" class="close" (click)="hideSchedule()">
@@ -44,7 +44,7 @@
         <div class="container" *ngIf="howToScheduleDisplayed">
           <div class="row text-center">
             <div class="col">
-              <span class="display-4">How to schedule</span>
+              <span class="h2">How to schedule</span>
             </div>
           </div>
           <div class="row">
