@@ -9,7 +9,7 @@ namespace DoNotDisturb.Preloaders
 {
     public class PreloadService : IPreloader
     {
-        private List<IPreload> _preloaders;
+        private readonly List<IPreload> _preloaders;
         
         public PreloadService(IServiceProvider provider, HeartbeatService heartbeatService)
         {

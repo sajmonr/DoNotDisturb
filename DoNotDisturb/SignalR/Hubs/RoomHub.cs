@@ -5,6 +5,7 @@ using DoNotDisturb.Models;
 using DoNotDisturb.Preloaders;
 using DoNotDisturb.Services;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 
 namespace DoNotDisturb.SignalR.Hubs
 {
@@ -42,6 +43,12 @@ namespace DoNotDisturb.SignalR.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
             
             _roomSubscription.Subscribe(roomName, device);
+        }
+
+        public static void MeetingsUpdated(IHubContext<RoomHub> roomContext, string room, IEnumerable<Meeting> meetings)
+        {
+            roomContext.Clients.Group(room)
+                .SendCoreAsync("meetingsUpdated", new object[]{ meetings });
         }
 
         public override Task OnDisconnectedAsync(Exception exception)

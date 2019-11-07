@@ -29,7 +29,7 @@ namespace DoNotDisturb.Notifications
         {
             if (!(notification is MeetingsUpdatedNotification meetingsNotification)) 
                 return;
-
+            
             _roomContext.Clients.Group(meetingsNotification.Room)
                 .SendCoreAsync("meetingsUpdated", new object[]{ meetingsNotification.Meetings });
         }
