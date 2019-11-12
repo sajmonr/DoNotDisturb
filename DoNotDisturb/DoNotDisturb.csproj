@@ -41,8 +41,6 @@
         <Content Include="ClientApp\src\app\outside\dashboard\dashboard.component.html" />
         <Content Include="ClientApp\src\app\outside\dashboard\dashboard.component.less" />
         <Content Include="ClientApp\src\app\outside\dashboard\dashboard.component.old.html" />
-        <Content Include="ClientApp\src\app\outside\dashboard\dashboard.schedule\dashboard.schedule.component.html" />
-        <Content Include="ClientApp\src\app\outside\dashboard\dashboard.schedule\dashboard.schedule.component.less" />
         <Content Include="ClientApp\src\app\outside\outside.component.html" />
         <Content Include="ClientApp\src\app\outside\outside.component.less" />
         <Content Include="ClientApp\src\app\settings\settings.component.html" />
@@ -51,6 +49,10 @@
         <Content Include="ClientApp\src\app\setup\setup.component.less" />
         <Content Include="ClientApp\src\app\shared\components\message\message.component.html" />
         <Content Include="ClientApp\src\app\shared\components\message\message.component.less" />
+        <Content Include="ClientApp\src\app\shared\components\schedule\schedule-meetings\schedule-meetings.component.html" />
+        <Content Include="ClientApp\src\app\shared\components\schedule\schedule-meetings\schedule-meetings.component.less" />
+        <Content Include="ClientApp\src\app\shared\components\schedule\schedule.component.html" />
+        <Content Include="ClientApp\src\app\shared\components\schedule\schedule.component.less" />
         <Content Include="ClientApp\src\app\spinner\spinner.component.html" />
         <Content Include="ClientApp\src\app\spinner\spinner.component.less" />
         <Content Include="ClientApp\src\assets\appsettings.json" />
@@ -66,6 +68,7 @@
         <None Include="ClientApp\src\app\inside\welcome\empty-welcome\empty-welcome.component.ts" />
         <None Include="ClientApp\src\app\inside\welcome\global-welcome\global-welcome.component.ts" />
         <None Include="ClientApp\src\app\inside\welcome\personal-welcome\personal-welcome.component.ts" />
+        <None Include="ClientApp\src\app\shared\components\schedule\schedule.component.ts" />
         <None Include="ClientApp\src\app\shared\guards\location.guard.ts" />
         <None Include="ClientApp\src\app\shared\services\events.service.ts" />
         <None Include="ClientApp\src\app\shared\services\modal.service.ts" />

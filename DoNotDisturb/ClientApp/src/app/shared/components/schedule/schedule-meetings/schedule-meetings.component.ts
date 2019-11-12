@@ -1,14 +1,14 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Meeting} from '../../../shared/models/meeting.model';
-import {DatePrecision, DateUtils} from "../../../shared/utils/date-utils";
-import {TimingService} from "../../../shared/services/timing.service";
+import {Meeting} from "../../../models/meeting.model";
+import {TimingService} from "../../../services/timing.service";
+import {DatePrecision, DateUtils} from "../../../utils/date-utils";
 
 @Component({
-  selector: 'app-dashboard-schedule',
-  templateUrl: './dashboard.schedule.component.html',
-  styleUrls: ['./dashboard.schedule.component.less', '../dashboard.component.less']
+  selector: 'app-schedule-meetings',
+  templateUrl: './schedule-meetings.component.html',
+  styleUrls: ['./schedule-meetings.component.less']
 })
-export class ScheduleComponent implements OnChanges, OnInit{
+export class ScheduleMeetingsComponent implements OnChanges, OnInit{
   @Input('meetings')meetings: Meeting[] = [];
   @Input('maxMeetings')maxVisibleMeetings = 4;
 
@@ -26,6 +26,9 @@ export class ScheduleComponent implements OnChanges, OnInit{
   }
 
   private organizeMeetings() {
+    if(!this.meetings)
+      return;
+
     const today = new Date();
     const tomorrow = DateUtils.addDays(new Date(), 1);
     const newToday: Meeting[] = [];

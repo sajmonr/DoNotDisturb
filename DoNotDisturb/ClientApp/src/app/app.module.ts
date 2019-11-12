@@ -14,7 +14,6 @@ import {DashboardComponent as InsideDashboardComponent} from './inside/dashboard
 import {CalendarService} from './shared/services/calendar.service';
 import {MessageService} from './shared/services/message.service';
 import {MessageComponent} from './shared/components/message/message.component';
-import { ScheduleComponent } from './outside/dashboard/dashboard.schedule/dashboard.schedule.component';
 import {RoomService} from './shared/services/room.service';
 import {TimePipe} from './shared/pipes/time.pipe';
 import { WelcomeComponent } from './inside/welcome/welcome.component';
@@ -28,6 +27,8 @@ import {EmptyWelcomeComponent} from "./inside/welcome/empty-welcome/empty-welcom
 import {PersonalWelcomeComponent} from "./inside/welcome/personal-welcome/personal-welcome.component";
 import {ModalService} from "./shared/services/modal.service";
 import {ToastService} from "./shared/services/toast.service";
+import {ScheduleMeetingsComponent} from "./shared/components/schedule/schedule-meetings/schedule-meetings.component";
+import {ScheduleComponent} from "./shared/components/schedule/schedule.component";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {ToastService} from "./shared/services/toast.service";
     SpinnerComponent,
     InsideComponent,
     OutsideComponent,
+    ScheduleMeetingsComponent,
     ScheduleComponent,
     TimePipe,
     WelcomeComponent,

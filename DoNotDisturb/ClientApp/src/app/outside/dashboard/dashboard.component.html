@@ -30,7 +30,7 @@
     <div class="container-fluid">
       <div class="row mb-1">
         <div class="col text-center">
-          <div class="d-inline-block" style="cursor: pointer;" (click)="showSchedule()" data-target="#modal-schedule">
+          <div class="d-inline-block" style="cursor: pointer;" (click)="schedule.show()" data-target="#modal-schedule">
             <img src="/assets/images/icon-up.png"/>
             <span class="d-block display-3 text-white">View Schedule</span>
           </div>
@@ -39,62 +39,4 @@
     </div>
   </div>
 
-<div #scheduleModal class="modal fade modal-fullscreen text-dark" id="modal-schedule" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header border-0">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-4">
-              <a routerLink="/settings">
-                <img src="/assets/images/settings.png"/>
-              </a>
-            </div>
-            <div class="col-4 text-center">
-              <span class="display-3">Upcoming meetings</span>
-            </div>
-            <div class="col-4 text-right">
-              <button type="button" class="close" (click)="hideSchedule()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <app-dashboard-schedule *ngIf="!howToScheduleDisplayed" [meetings]="meetings"></app-dashboard-schedule>
-        <div class="container" *ngIf="howToScheduleDisplayed">
-          <div class="row text-center">
-            <div class="col">
-              <span class="display-4">How to schedule</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <div>Here are instructions on how to do it:
-                <ol>
-                  <li>Please visit your Google Calendar associated with your Shaw account</li>
-                  <li>Select the date and time for which you want to schedule your meeting</li>
-                  <li>Choose the desired room for the meeting to take place</li>
-                  <li>Fill out all necessary information required for the meeting</li>
-                  <li>Click Save, You have now scheduled your meeting!</li>
-                </ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer border-0">
-        <div class="container-fluid">
-          <div class="row text-center">
-            <div class="col">
-              <span style="cursor: pointer;" (click)="howToScheduleDisplayed = !howToScheduleDisplayed">
-                {{howToScheduleDisplayed ? 'Back to schedule' : 'Need to schedule a meeting?'}}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<app-schedule [meetings]="meetings" #schedule></app-schedule>

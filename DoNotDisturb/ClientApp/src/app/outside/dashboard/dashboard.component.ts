@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit {
   private clockTimer;
   private date: Date;
   private isLoaded = false;
-  private howToScheduleDisplayed = false;
   private roomDevice: RoomDevice;
   private connected = false;
   private subscribed = false;
@@ -127,15 +126,5 @@ export class DashboardComponent implements OnInit {
     if(this.activatedRoute.snapshot.params['tomorrow']){
       this.showTomorrow =this.activatedRoute.snapshot.params['tomorrow'] == 1;
     }
-  }
-
-  private showSchedule(){
-    //@ts-ignore
-    $(this.scheduleModal.nativeElement).modal('show');
-  }
-  private hideSchedule(){
-    this.howToScheduleDisplayed = false;
-    //@ts-ignore
-    $(this.scheduleModal.nativeElement).modal('hide');
   }
 }

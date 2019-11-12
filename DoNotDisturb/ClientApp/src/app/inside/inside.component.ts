@@ -6,7 +6,6 @@ import {MessageService} from '../shared/services/message.service';
 import {RoomService} from '../shared/services/room.service';
 import {TimingService} from '../shared/services/timing.service';
 import {DatePrecision, DateUtils} from "../shared/utils/date-utils";
-import {NEXT} from "@angular/core/src/render3/interfaces/view";
 
 @Component({
   selector: 'app-inside',
@@ -14,7 +13,6 @@ import {NEXT} from "@angular/core/src/render3/interfaces/view";
   styleUrls: ['./inside.component.less']
 })
 export class InsideComponent implements OnInit{
-  @ViewChild('scheduleModal')scheduleModal: ElementRef;
   private roomDevice: RoomDevice;
   private room: string;
   private loaded = false;
@@ -23,7 +21,6 @@ export class InsideComponent implements OnInit{
   private currentMeeting: Meeting;
   private nextMeeting: Meeting;
 
-  private howToScheduleDisplayed = false;
   private meetings: Meeting[] = [];
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -74,15 +71,6 @@ export class InsideComponent implements OnInit{
       this.currentMeeting = currentMeeting;
     if(!this.nextMeeting || !this.nextMeeting.equal(nextMeeting))
       this.nextMeeting = nextMeeting;
-  }
-  private showSchedule(){
-    //@ts-ignore
-    $(this.scheduleModal.nativeElement).modal('show');
-  }
-  private hideSchedule(){
-    this.howToScheduleDisplayed = false;
-    //@ts-ignore
-    $(this.scheduleModal.nativeElement).modal('hide');
   }
   private loadRouteParams(){
     const room = localStorage.getItem('room');
