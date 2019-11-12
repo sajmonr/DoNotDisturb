@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {SettingsService} from './settings.service';
-import {Observable} from 'rxjs';
 import {Meeting} from '../models/meeting.model';
 import {MeetingRoom} from '../models/meeting-room.model';
 
@@ -19,6 +18,10 @@ export class CalendarService{
 
   initialized() {
     return this.settings.initialized;
+  }
+
+  isInitialized(): boolean{
+    return this.settings.isInitialized();
   }
 
   private getMeetings(entities:any[]): Meeting[]{

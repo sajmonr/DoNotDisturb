@@ -19,9 +19,13 @@ export class SetupComponent implements OnInit{
   constructor(private calendars: CalendarService, private router: Router){}
 
   ngOnInit(): void {
-    this.calendars.initialized().subscribe(() => {
+    if(this.calendars.isInitialized()){
       this.loadRooms();
-    })
+    }else{
+      this.calendars.initialized().subscribe(() => {
+        this.loadRooms();
+      });
+    }
   }
 
   private async loadRooms(){
@@ -61,6 +65,7 @@ export class SetupComponent implements OnInit{
   }
 
   private onFinishSetup(){
+
     this.router.navigate([localStorage.getItem('location')]);
   }
 

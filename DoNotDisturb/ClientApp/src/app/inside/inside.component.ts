@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RoomDevice, RoomDeviceType} from '../shared/models/room-device.model';
 import {Meeting} from '../shared/models/meeting.model';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -12,7 +12,7 @@ import {DatePrecision, DateUtils} from "../shared/utils/date-utils";
   templateUrl: './inside.component.html',
   styleUrls: ['./inside.component.less']
 })
-export class InsideComponent implements OnInit{
+export class InsideComponent implements OnInit, OnDestroy{
   private roomDevice: RoomDevice;
   private room: string;
   private loaded = false;
@@ -44,6 +44,9 @@ export class InsideComponent implements OnInit{
 
     this.roomService.connected.subscribe(this.onConnected.bind(this));
     this.timing.tick.subscribe(this.tick.bind(this));
+  }
+
+  ngOnDestroy(): void {
   }
 
   private onConnected(){

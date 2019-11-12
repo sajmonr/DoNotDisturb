@@ -16,12 +16,18 @@ export class RoomService{
   isConnected = false;
 
   constructor(private settings: SettingsService){
-    this.settings.initialized.subscribe(result => {
-      if(result){
-        this.initSignalR();
-        this.startConnection();
-      }
-    });
+    if(this.settings.isInitialized()){
+      this.initComponent();
+    }else{
+      this.settings.initialized.subscribe(result => {
+        this.initComponent();
+      });
+    }
+  }
+
+  private initComponent(){
+    this.initSignalR();
+    this.startConnection();
   }
 
   private initSignalR(){
