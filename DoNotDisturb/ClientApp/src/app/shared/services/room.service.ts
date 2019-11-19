@@ -3,14 +3,15 @@ import * as signalR from '@aspnet/signalr';
 import {SettingsService} from './settings.service';
 import {Meeting} from '../models/meeting.model';
 import {RoomDevice, RoomDeviceType} from '../models/room-device.model';
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoomService{
-  @Output()connected = new EventEmitter();
-  @Output()disconnected = new EventEmitter();
-  @Output()meetingsUpdated = new EventEmitter<Meeting[]>();
+  connected = new Subject();
+  disconnected = new Subject();
+  meetingsUpdated = new Subject<Meeting[]>();
   private hubConnection: signalR.HubConnection;
 
   isConnected = false;
@@ -41,7 +42,7 @@ export class RoomService{
       console.log('The connection was lost: ' + error);
       console.log('Reconnecting in 30 seconds.');
       this.isConnected = false;
-      this.disconnected.emit();
+      this.disconnected.next();
       this.reconnectIn(30);
     });
   }
@@ -52,7 +53,7 @@ export class RoomService{
       .then(() => {
         console.log('Successfully connected to server.');
         this.isConnected = true;
-        this.connected.emit(true);
+        this.connected.next(true);
       })
       .catch(err => {
         console.log('Failed to connect to server. Reconnecting in 30 seconds.');
@@ -72,7 +73,7 @@ export class RoomService{
     if(meetings){
       const output: Meeting[] = [];
       meetings.forEach(m => output.push(new Meeting(m)));
-      this.meetingsUpdated.emit(output);
+      this.meetingsUpdated.next(output);
     }
   }
 

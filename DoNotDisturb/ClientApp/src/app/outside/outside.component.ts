@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -6,7 +6,5 @@ import {Router} from "@angular/router";
   templateUrl: './outside.component.html',
   styleUrls: ['./outside.component.less']
 })
-export class OutsideComponent {
-
-
+export class OutsideComponent{
 }

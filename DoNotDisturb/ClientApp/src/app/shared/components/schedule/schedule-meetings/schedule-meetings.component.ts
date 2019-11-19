@@ -1,19 +1,22 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {Meeting} from "../../../models/meeting.model";
 import {TimingService} from "../../../services/timing.service";
 import {DatePrecision, DateUtils} from "../../../utils/date-utils";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-schedule-meetings',
   templateUrl: './schedule-meetings.component.html',
   styleUrls: ['./schedule-meetings.component.less']
 })
-export class ScheduleMeetingsComponent implements OnChanges, OnInit{
+export class ScheduleMeetingsComponent implements OnChanges, OnInit, OnDestroy{
   @Input('meetings')meetings: Meeting[] = [];
   @Input('maxMeetings')maxVisibleMeetings = 4;
 
   private meetingsToday: Meeting[] = [];
   private meetingsTomorrow: Meeting[] = [];
+
+  private timingSubscription: Subscription;
 
   constructor(private timeService: TimingService){}
 
@@ -22,7 +25,11 @@ export class ScheduleMeetingsComponent implements OnChanges, OnInit{
   }
 
   ngOnInit(): void {
-    this.timeService.tick.subscribe(this.organizeMeetings.bind(this));
+    this.timingSubscription = this.timeService.tick.subscribe(this.organizeMeetings.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    this.timingSubscription.unsubscribe();
   }
 
   private organizeMeetings() {

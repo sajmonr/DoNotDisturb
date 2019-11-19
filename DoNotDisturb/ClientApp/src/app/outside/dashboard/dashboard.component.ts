@@ -1,16 +1,17 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Meeting} from '../../shared/models/meeting.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MessageService} from '../../shared/services/message.service';
 import {RoomService} from '../../shared/services/room.service';
 import {RoomDevice, RoomDeviceType} from '../../shared/models/room-device.model';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   @ViewChild('scheduleModal')scheduleModal: ElementRef;
   private maxVisibleMeetings = 4;
   private room: string;
@@ -30,6 +31,8 @@ export class DashboardComponent implements OnInit {
 
   private meetings: Meeting[] = [];
 
+  private roomServiceSubscription: Subscription;
+
   constructor(private activatedRoute: ActivatedRoute,
               private message: MessageService,
               private roomService: RoomService,
@@ -48,12 +51,17 @@ export class DashboardComponent implements OnInit {
 
     if(this.roomService.isConnected)
       this.onConnected();
+    else
+      this.roomService.connected.subscribe(this.onConnected.bind(this));
 
-    this.roomService.connected.subscribe(this.onConnected.bind(this));
     this.roomService.disconnected.subscribe(this.onDisconnected.bind(this));
 
     this.clockTick();
     this.clockTimer = setInterval(() => this.clockTick(), 1000);
+  }
+
+  ngOnDestroy(): void {
+    this.roomServiceSubscription.unsubscribe();
   }
 
   private onConnected(){
@@ -62,7 +70,7 @@ export class DashboardComponent implements OnInit {
     this.roomService.subscribe(this.room, this.roomDevice).then(result => {
       if(!this.subscribed) {
         this.subscribed = true;
-        this.roomService.meetingsUpdated.subscribe(meetings => {
+        this.roomServiceSubscription = this.roomService.meetingsUpdated.subscribe(meetings => {
           this.refreshMeetings(meetings);
         });
       }

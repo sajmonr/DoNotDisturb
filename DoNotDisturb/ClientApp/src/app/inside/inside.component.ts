@@ -6,6 +6,7 @@ import {MessageService} from '../shared/services/message.service';
 import {RoomService} from '../shared/services/room.service';
 import {TimingService} from '../shared/services/timing.service';
 import {DatePrecision, DateUtils} from "../shared/utils/date-utils";
+import {Subscriber, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-inside',
@@ -16,12 +17,15 @@ export class InsideComponent implements OnInit, OnDestroy{
   private roomDevice: RoomDevice;
   private room: string;
   private loaded = false;
-  private maxVisibleMeetings = 4;
+  private maxVisibleMeetings = 3;
 
   private currentMeeting: Meeting;
   private nextMeeting: Meeting;
 
   private meetings: Meeting[] = [];
+
+  private timingSubscription: Subscription;
+  private roomServiceSubscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -39,26 +43,32 @@ export class InsideComponent implements OnInit, OnDestroy{
     if(!this.room){
       this.message.error('You have not selected any room. You will not see any results. :(');
     }
-    if(this.roomService.isConnected)
+    if(this.roomService.isConnected){
       this.onConnected();
-
-    this.roomService.connected.subscribe(this.onConnected.bind(this));
-    this.timing.tick.subscribe(this.tick.bind(this));
+    }else{
+      this.roomService.connected.subscribe(this.onConnected.bind(this));
+    }
+    this.timingSubscription = this.timing.tick.subscribe(this.tick.bind(this));
   }
 
   ngOnDestroy(): void {
+    this.timingSubscription.unsubscribe();
+    this.roomServiceSubscription.unsubscribe();
   }
 
   private onConnected(){
+    this.roomService.connected.unsubscribe();
     this.roomService.getMeetings(this.room, this.maxVisibleMeetings).then(meetings => this.refreshMeetings(meetings));
     this.roomService.subscribe(this.room, this.roomDevice).then(() => {
-      this.roomService.meetingsUpdated.subscribe(meetings => this.refreshMeetings(meetings));
+      this.roomServiceSubscription = this.roomService.meetingsUpdated.subscribe(meetings => this.refreshMeetings(meetings));
     });
   }
 
   private refreshMeetings(meetings: Meeting[]){
     if(!this.loaded)
       this.loaded = true;
+
+    console.log('Refreshing meetings for INSIDE on ' + new Date());
 
     this.meetings = meetings;
     this.updateCurrentMeeting();

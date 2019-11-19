@@ -1,7 +1,7 @@
-import {EventEmitter, Output} from '@angular/core';
+import {Subject} from "rxjs";
 
 export class TimingService{
-  @Output()tick = new EventEmitter();
+  tick = new Subject();
 
   private clockTimer;
 
@@ -10,7 +10,7 @@ export class TimingService{
   }
 
   private refreshDateTime(){
-    this.tick.emit();
+    this.tick.next();
   }
 
 }
