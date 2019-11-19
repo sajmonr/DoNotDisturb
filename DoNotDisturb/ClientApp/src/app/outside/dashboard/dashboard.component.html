@@ -4,19 +4,19 @@
       <div class="container text-white">
         <div class="row">
           <div class="col text-center">
-            <span class="display-1 font-weight-bold">{{room}}</span>
+            <span class="display-1 font-weight-bold" id="outsideRoom">{{room}}</span>
           </div>
         </div>
         <div class="row">
           <div class="col text-center">
-            <span class="display-2">
+            <span class="display-2" id="outsideAvailability">
               {{connected && subscribed && firstTimeLoad ? (currentMeeting ? 'Unavailable' : 'Available') : (firstTimeLoad ? 'Waiting for connection' : 'Loading meetings')}}
             </span>
           </div>
         </div>
         <div class="row" *ngIf="connected">
           <div class="col text-center">
-            <div class="display-4">
+            <div class="display-4" id="outsideMeetingTime">
               <span *ngIf="currentMeeting">{{currentMeetingEndsIn | time: true}} left</span>
               <span *ngIf="!currentMeeting && nextMeeting && nextMeetingStartsIn < 1000 * 60 * 60 * 3">Next meeting starts in {{nextMeetingStartsIn | time}}</span>
             </div>
@@ -32,7 +32,7 @@
         <div class="col text-center">
           <div class="d-inline-block" style="cursor: pointer;" (click)="schedule.show()" data-target="#modal-schedule">
             <img src="/assets/images/icon-up.png"/>
-            <span class="d-block display-3 text-white">View Schedule</span>
+            <span class="d-block display-3 text-white" id="outsideViewSchedule">View Schedule</span>
           </div>
         </div>
       </div>
