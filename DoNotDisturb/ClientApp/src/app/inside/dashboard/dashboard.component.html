@@ -1,9 +1,9 @@
 <div class="container-fluid h-100">
   <div class="row h-100 align-items-center">
-    <div class="col-6 text-center">
-      <circle-progress
+    <div class="col-5 text-center">
+      <circle-progress id="circleProgress"
         [percent]="(1 - meetingProgress) * 100"
-        radius="100"
+        radius="120"
         outerStrokeWidth="20"
         innerStrokeWidth="0"
         [outerStrokeColor]="progressColor"
@@ -11,24 +11,24 @@
         [showUnits]="false"
         [title]="meetingEndsIn | time: true"
         titleColor="#ffffff"
-        titleFontSize="22"
+        titleFontSize="20"
       ></circle-progress>
     </div>
-    <div class="col-6">
+    <div class="col-7">
       <div class="container text-white">
         <div class="row">
           <div class="col text-center">
-            <span class="display-4">{{room}}</span>
+            <span id="dshbrdRoom">{{room}}</span>
           </div>
         </div>
         <div class="row">
           <div class="col text-center">
-            <span class="display-3 font-weight-bold">Welcome {{meeting ? meeting.owner : ''}}</span>
+            <span class="font-weight-bold" id="dshbrdMeetOwn">Welcome {{meeting ? meeting.owner : ''}}</span>
           </div>
         </div>
         <div class="row">
           <div class="col text-center">
-            <span class="display-4">
+            <span id="dshbrdMeet">
               {{meeting ? meeting.title : 'No title'}}
             </span>
           </div>

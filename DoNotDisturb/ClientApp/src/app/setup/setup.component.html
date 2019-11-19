@@ -1,12 +1,12 @@
 <div class="container overflow-hidden text-white h-100">
   <div class="row mt-5">
     <div class="col text-center text-white">
-      <span class="display-3 d-block">It looks like this is a new device.</span>
+      <span class="display-3 d-block" id="setupTitle">It looks like this is a new device.</span>
     </div>
   </div>
   <div class="row mt-3" *ngIf="phase == 0">
     <div class="col">
-      <span class="display-4 d-block text-center">Please select a room to use it with.</span>
+      <span class="display-4 d-block text-center" id="setupSelRoom">Please select a room to use it with.</span>
       <input type="text" class="text-white" [(ngModel)]="searchFilter" (keyup)="onSearch()" placeholder="Search for a room"/>
 
       <app-spinner *ngIf="buildings.length == 0" color="white" class="d-block text-center mt-4"></app-spinner>
@@ -29,18 +29,18 @@
   </div>
   <div class="row mt-3" *ngIf="phase == 1">
     <div class="col text-center">
-      <span class="display-4 d-block">Select the function of this device.</span>
+      <span class="display-4 d-block" id="setupFunction">Select the function of this device.</span>
       <button class="btn btn-outline-light py-4 my-5 mx-auto w-75" (click)="onDeviceSelect(0)">
-        Inside kiosk
+        <h4>Inside kiosk</h4>
       </button>
       <button class="btn btn-outline-light py-4 my-5 mx-auto w-75" (click)="onDeviceSelect(1)">
-        Outside kiosk
+        <h4>Outside kiosk</h4>
       </button>
     </div>
   </div>
   <div class="row mt-3" *ngIf="phase == 2">
     <div class="col text-center">
-      <span class="d-block display-3">Setup complete!</span>
+      <span class="d-block display-3" id="setupComplete">Setup complete!</span>
       <button class="btn btn-outline-success py-4 my-5 mx-auto w-75" (click)="onFinishSetup()">
         Start
       </button>

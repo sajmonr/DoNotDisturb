@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RoomDevice, RoomDeviceType} from '../shared/models/room-device.model';
 import {Meeting} from '../shared/models/meeting.model';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -6,15 +6,13 @@ import {MessageService} from '../shared/services/message.service';
 import {RoomService} from '../shared/services/room.service';
 import {TimingService} from '../shared/services/timing.service';
 import {DatePrecision, DateUtils} from "../shared/utils/date-utils";
-import {NEXT} from "@angular/core/src/render3/interfaces/view";
 
 @Component({
   selector: 'app-inside',
   templateUrl: './inside.component.html',
   styleUrls: ['./inside.component.less']
 })
-export class InsideComponent implements OnInit{
-  @ViewChild('scheduleModal')scheduleModal: ElementRef;
+export class InsideComponent implements OnInit, OnDestroy{
   private roomDevice: RoomDevice;
   private room: string;
   private loaded = false;
@@ -23,7 +21,6 @@ export class InsideComponent implements OnInit{
   private currentMeeting: Meeting;
   private nextMeeting: Meeting;
 
-  private howToScheduleDisplayed = false;
   private meetings: Meeting[] = [];
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -47,6 +44,9 @@ export class InsideComponent implements OnInit{
 
     this.roomService.connected.subscribe(this.onConnected.bind(this));
     this.timing.tick.subscribe(this.tick.bind(this));
+  }
+
+  ngOnDestroy(): void {
   }
 
   private onConnected(){
@@ -74,15 +74,6 @@ export class InsideComponent implements OnInit{
       this.currentMeeting = currentMeeting;
     if(!this.nextMeeting || !this.nextMeeting.equal(nextMeeting))
       this.nextMeeting = nextMeeting;
-  }
-  private showSchedule(){
-    //@ts-ignore
-    $(this.scheduleModal.nativeElement).modal('show');
-  }
-  private hideSchedule(){
-    this.howToScheduleDisplayed = false;
-    //@ts-ignore
-    $(this.scheduleModal.nativeElement).modal('hide');
   }
   private loadRouteParams(){
     const room = localStorage.getItem('room');

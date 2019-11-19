@@ -5,9 +5,11 @@ using DoNotDisturb.Configurations;
 using DoNotDisturb.Models;
 using DoNotDisturb.Notifications;
 using DoNotDisturb.Services;
+using DoNotDisturb.SignalR.Hubs;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using Microsoft.AspNetCore.SignalR;
 
 namespace DoNotDisturb.Preloaders
 {
@@ -16,6 +18,7 @@ namespace DoNotDisturb.Preloaders
         private readonly GoogleService _google;
         private readonly RoomSubscriptionService _roomSubscription;
         private readonly INotify _notifications;
+        private readonly IHubContext<RoomHub> _roomHubContext;
         private readonly int _maxEvents;
 
         private readonly DemoConfiguration _demo;
@@ -28,12 +31,14 @@ namespace DoNotDisturb.Preloaders
             DemoConfiguration demoConfiguration, 
             INotify notifications,
             GoogleService googleService, 
-            RoomSubscriptionService roomSubscriptionService)
+            RoomSubscriptionService roomSubscriptionService,
+            IHubContext<RoomHub> roomHubContext)
         {
             _google = googleService;
             _roomSubscription = roomSubscriptionService;
             _notifications = notifications;
             _demo = demoConfiguration;
+            _roomHubContext = roomHubContext;
 
             _maxEvents = configuration.MaxCalendarEvents;
         }
@@ -71,7 +76,8 @@ namespace DoNotDisturb.Preloaders
             foreach (var key in _meetings.Keys)
             {
                 var m = PreloadForRoom(key);
-                _notifications.Push(new MeetingsUpdatedNotification{Room = key, Meetings = m});                
+                //_notifications.Push(new MeetingsUpdatedNotification{Room = key, Meetings = m});
+                RoomHub.MeetingsUpdated(_roomHubContext, key, m);
             }
         }
         private void LoadSubscribers()

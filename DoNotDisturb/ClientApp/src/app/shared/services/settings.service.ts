@@ -3,7 +3,7 @@ import {EventEmitter, Injectable, OnInit, Output} from '@angular/core';
 
 @Injectable()
 export class SettingsService{
-  private isInit: boolean;
+  private isInit = false;
   @Output()initialized = new EventEmitter<boolean>();
   serverUrl: string;
   signalRUrl: string;
@@ -16,8 +16,13 @@ export class SettingsService{
       this.signalRUrl = settings['signalRUrl'];
       this.cookieName = settings['cookieName'];
       this.cookieRoom = settings['cookieRoom'];
+      this.isInit = true;
       this.initialized.emit(true);
     });
+  }
+
+  isInitialized(): boolean{
+    return this.isInit;
   }
 
   getRoomName(): string{

@@ -12,59 +12,13 @@
   <div class="container-fluid">
     <div class="row mb-1">
       <div class="col text-center">
-        <div class="d-inline-block" style="cursor: pointer;" (click)="showSchedule()" data-target="#modal-schedule">
+        <div class="d-inline-block" style="cursor: pointer;" (click)="schedule.show()">
           <img src="/assets/images/icon-up.png"/>
-          <span class="d-block h4 text-white">View Schedule</span>
+          <span class="d-block text-white" id="viewSchedule">View Schedule</span>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div #scheduleModal class="modal fade modal-fullscreen text-dark" id="modal-schedule" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header border-0">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4 text-center">
-              <span class="h4">Upcoming meetings</span>
-            </div>
-            <div class="col-4 text-right">
-              <button type="button" class="close" (click)="hideSchedule()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <app-dashboard-schedule *ngIf="!howToScheduleDisplayed" [meetings]="meetings"></app-dashboard-schedule>
-        <div class="container" *ngIf="howToScheduleDisplayed">
-          <div class="row text-center">
-            <div class="col">
-              <span class="h2">How to schedule</span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <p>Here are instructions on how to do it...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer border-0">
-        <div class="container-fluid">
-          <div class="row text-center">
-            <div class="col">
-              <span style="cursor: pointer;" (click)="howToScheduleDisplayed = !howToScheduleDisplayed">
-                {{howToScheduleDisplayed ? 'Back to schedule' : 'Need to schedule a meeting?'}}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<app-schedule #schedule [meetings]="meetings"></app-schedule>
