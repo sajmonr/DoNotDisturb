@@ -244,7 +244,7 @@ namespace DoNotDisturb.Preloaders
                 Title = "Early demo meeting",
                 StartTime = DateTime.Now.AddMinutes(0.5),
                 EndTime = DateTime.Now.AddMinutes(1.5),
-                Owner = "John Doe 1"
+                Owner = "John Doe"
             });
             
             meetings.Add(new Meeting
@@ -252,7 +252,7 @@ namespace DoNotDisturb.Preloaders
                 Title = "Late demo meeting",
                 StartTime = DateTime.Now.AddHours(2),
                 EndTime = DateTime.Now.AddHours(4),
-                Owner = "Jane Doe 2"
+                Owner = "Steven Smith"
             });
 
             var startTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.AddDays(1).Day, 7, 0, 0);
@@ -262,7 +262,7 @@ namespace DoNotDisturb.Preloaders
                 Title = "Morning demo meeting",
                 StartTime = startTime,
                 EndTime = startTime.AddHours(1),
-                Owner = "John Doe 3"
+                Owner = "Alex Jordan"
             });
             
             return meetings;

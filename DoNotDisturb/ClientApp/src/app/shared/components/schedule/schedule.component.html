@@ -23,13 +23,14 @@
         <div class="container" *ngIf="howToScheduleDisplayed">
           <div class="row text-center">
             <div class="col">
-              <span class="h2">How to schedule</span>
+              <span class="h2" id="howToSchedule">How to schedule</span>
             </div>
           </div>
+          <br>
           <div class="row">
-            <div class="col">
-              <div>Here are instructions on how to do it:
-                <ol>
+            <div class="col" >
+              <div><p  id="instructions">Here are instructions on how to do it:</p>
+                <ol id="steps">
                   <li>Please visit your Google Calendar associated with your Shaw account</li>
                   <li>Select the date and time for which you want to schedule your meeting</li>
                   <li>Choose the desired room for the meeting to take place</li>
@@ -44,7 +45,7 @@
       <div class="modal-footer border-0">
         <div class="container-fluid">
           <div class="row text-center">
-            <div class="col">
+            <div class="col" id="scheduleMeeting">
               <span style="cursor: pointer;" (click)="howToScheduleDisplayed = !howToScheduleDisplayed">
                 {{howToScheduleDisplayed ? 'Back to schedule' : 'Need to schedule a meeting?'}}
               </span>
