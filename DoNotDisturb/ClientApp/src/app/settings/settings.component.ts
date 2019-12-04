@@ -12,7 +12,8 @@ export class SettingsComponent {
 
   private onRoomReset(){
     localStorage.clear();
-    this.router.navigate(['/']);
+    //this.router.navigate(['/']);
+    location.href = '/';
   }
 
 }

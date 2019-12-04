@@ -11,7 +11,7 @@ import {Subscription} from "rxjs";
 })
 export class ScheduleMeetingsComponent implements OnChanges, OnInit, OnDestroy{
   @Input('meetings')meetings: Meeting[] = [];
-  @Input('maxMeetings')maxVisibleMeetings = 4;
+  @Input('maxMeetings')maxVisibleMeetings = 3;
 
   private meetingsToday: Meeting[] = [];
   private meetingsTomorrow: Meeting[] = [];
